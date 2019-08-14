@@ -1,10 +1,13 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -17,7 +20,7 @@ public class WordCount {
 			Scanner file = new Scanner(importFile);
 			countWords(file, wordCountData);
 			
-			System.out.println(wordCountData);
+			System.out.println(sortByValue(wordCountData));
 			file.close();
 			
 		} catch (FileNotFoundException e) {
@@ -45,5 +48,18 @@ public class WordCount {
 			wordCountData.put(noRepeatListWord, wordCount);
 		}
 	}
+	
+	public static <key, value extends Comparable<? super value>> Map<key, value> sortByValue(Map<key, value> wordCountData) {
+        List<Entry<key, value>> list = new ArrayList<>(wordCountData.entrySet());
+        list.sort(Entry.comparingByValue(Comparator.reverseOrder()));
+
+        Map<key, value> result = new LinkedHashMap<>();
+        for (Entry<key, value> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+    }
+
 
 }
