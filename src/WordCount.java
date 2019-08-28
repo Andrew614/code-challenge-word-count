@@ -15,21 +15,23 @@ public class WordCount {
 
 	public static void main(String[] args) {
 		try {
-			Map<String, Integer> wordCountData = new HashMap<String, Integer>();
 			File importFile = new File("Paragraph.txt");
 			Scanner file = new Scanner(importFile);
+
+			Map<String, Integer> wordCountData = new HashMap<String, Integer>();
 			countWords(file, wordCountData);
-			
-			System.out.println(sortByValue(wordCountData));
+			Map<String, Integer> result = sortByValue(wordCountData);
+
+			System.out.println(result);
 			file.close();
-			
+
 		} catch (FileNotFoundException e) {
 			System.out.println("The file does not exist");
 			e.printStackTrace();
 		}
 	}
 
-	
+	// counts each word occurrence and put it into a HashMap
 	private static void countWords(Scanner file, Map<String, Integer> wordCountData) {
 		List<String> wordsList = new ArrayList<String>();
 		Set<String> noRepeatList = new HashSet<String>();
@@ -48,18 +50,19 @@ public class WordCount {
 			wordCountData.put(noRepeatListWord, wordCount);
 		}
 	}
-	
-	public static <key, value extends Comparable<? super value>> Map<key, value> sortByValue(Map<key, value> wordCountData) {
-        List<Entry<key, value>> list = new ArrayList<>(wordCountData.entrySet());
-        list.sort(Entry.comparingByValue(Comparator.reverseOrder()));
 
-        Map<key, value> result = new LinkedHashMap<>();
-        for (Entry<key, value> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
+	// sorts HashMap by values
+	private static <key, value extends Comparable<? super value>> Map<key, value> sortByValue(
+			Map<key, value> wordCountData) {
+		List<Entry<key, value>> list = new ArrayList<>(wordCountData.entrySet());
+		list.sort(Entry.comparingByValue(Comparator.reverseOrder()));
 
-        return result;
-    }
+		Map<key, value> result = new LinkedHashMap<>();
+		for (Entry<key, value> entry : list) {
+			result.put(entry.getKey(), entry.getValue());
+		}
 
+		return result;
+	}
 
 }
